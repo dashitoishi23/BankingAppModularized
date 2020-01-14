@@ -5,17 +5,17 @@ namespace BankingApplicationModularized.Services
 {
     public class LoginServiceProvider
     {
-        public bool ValidateManagerLogin(Manager manager, string userID, string password)
+        public bool ValidateManagerLogin(string userID, string password)
         {
-            return (manager.userID == userID && manager.password == password) ? true : false;
+            return (userID == "Admin" && password == "Admin");
         }
         public bool ValidateAccountHolderLogin(AccountHolder holder, string userID, string password)
         {
-            return (holder.UserID == userID && holder.Password == password) ? true : false;
+            return (holder.UserID == userID && holder.Password == password);
         }
         public bool ValidateBankStaffLogin(BankStaff staff, string userID, string password)
         {
-            return (staff.UserID == userID && staff.Password == password) ? true : false;
+            return (staff.UserID == userID && staff.Password == password);
         }
     }
 

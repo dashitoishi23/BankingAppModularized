@@ -3,12 +3,12 @@ using System;
 using System.Linq;
 
 namespace BankingApplicationModularized.Services{
-    class AccountHolderServiceProvider
+    class AccountServiceProvider
     {
         AccountHolder Holder;
         Manager Manager;
 
-    public AccountHolderServiceProvider(AccountHolder holder, Manager manager)
+    public AccountServiceProvider(AccountHolder holder, Manager manager)
     {
             this.Holder = holder;
             this.Manager = manager;

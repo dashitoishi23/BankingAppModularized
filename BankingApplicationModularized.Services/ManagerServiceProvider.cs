@@ -5,7 +5,7 @@ using BankingApplicationModularized.Models;
 
 namespace BankingApplicationModularized.Services
 {
-    class ManagerServiceProvider
+    public class ManagerServiceProvider
     {
         Manager Manager;
         
@@ -13,11 +13,13 @@ namespace BankingApplicationModularized.Services
         {
             this.Manager = manager;
         }
-        public void CreateBank(string bankName, double impsOwnBank, double impsOtherBank, double rtgsOwnBank, double rtgsOtherBank)
+        public Manager CreateBank(string bankName, double impsOwnBank, double impsOtherBank, double rtgsOwnBank, double rtgsOtherBank)
         {
             string BankID = bankName.Substring(0, 3) + DateTime.Now.ToString();
             Currency NewCurrency = new Currency("INR", 1, true);
             Bank NewBank = new Bank(impsOwnBank, rtgsOwnBank, impsOtherBank, rtgsOtherBank, bankName, NewCurrency);
+            this.Manager.Banks.Add(NewBank);
+            return Manager;
         }
         public void CreateAccount(string accountType, string name, string userID, string password, string bankName, string address, string contact) 
         {

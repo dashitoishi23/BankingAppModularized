@@ -5,14 +5,12 @@ using BankingApplicationModularized.Models;
 
 namespace BankingApplicationModularized.Services
 {   
-    public class BankStaffServiceProvider
+    public class BankServiceProvider
     {
-        BankStaff Staff;
         Manager Manager;
 
-        public BankStaffServiceProvider(BankStaff staff, Manager manager)
+        public BankServiceProvider( Manager manager)
         {
-            this.Staff = staff;
             this.Manager = manager;
         }
         public void CreateAccount(string userID, string bankName)
@@ -51,6 +49,18 @@ namespace BankingApplicationModularized.Services
             Bank.RTGSOtherBank = RTGSOtherBank;
             Bank.IMPSOwnBank = IMPSSameBank;
             Bank.IMPSOtherBank = IMPSOtherBank;
+        }                                          
+        public void ViewAllTransactions(string bankName)
+        {
+            var Bank = this.Manager.Banks.Find(_ => _.BankName.Equals(bankName));
+            foreach(Transaction transaction in Bank.Transactions)
+            {
+                Console.WriteLine("Transaction ID" + transaction.TransactionID);
+                Console.WriteLine("Transaction Date" + transaction.TransactionDate);
+                Console.WriteLine("Amount" + transaction.Amount);
+                Console.WriteLine("From" + transaction.From);
+                Console.WriteLine("To" + transaction.To);
+            }
         }
     }
 }
