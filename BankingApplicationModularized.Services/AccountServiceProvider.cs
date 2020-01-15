@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 
 namespace BankingApplicationModularized.Services{
-    class AccountServiceProvider
+    public class AccountServiceProvider
     {
         AccountHolder Holder;
         Manager Manager;
@@ -14,30 +14,46 @@ namespace BankingApplicationModularized.Services{
             this.Manager = manager;
     }
 
-    public double DepositAmount(double fundsToDeposit)
+    public AccountHolder DepositAmount(double fundsToDeposit)
     {
-        Holder.Funds += fundsToDeposit;
-        return Holder.Funds;
+            Holder.Funds += fundsToDeposit;
+            return Holder;
     }
-    public void WithdrawMoney(double fundsToWithdraw)
+    public AccountHolder WithdrawMoney(double fundsToWithdraw)
     {
         if (Holder.Funds < fundsToWithdraw)
         {
             throw new Exception("Insufficient Funds");
         }
         Holder.Funds -= fundsToWithdraw;
+            return Holder;
     }
-    public void TransferFunds(double amountToTransfer, string to, string bankID)
+    public void TransferFunds(double amountToTransfer, string to, string bankID, string trasnferType)
     {
             if (Holder.Funds < amountToTransfer)
             {
                 throw new Exception("Insufficient Funds");
             }
+            double Charges = 0;
             var DebitedBank = this.Manager.Banks.Find(_ => (_.BankID == Holder.BankID));
             var DebitedAccount = DebitedBank.Accounts.Find(_ => (_.UserID == Holder.UserID));
-            DebitedAccount.Funds -= amountToTransfer;
             var BeneficiaryBank = this.Manager.Banks.FirstOrDefault(_ => (_.BankID == bankID));
             var BeneficiaryAccount = BeneficiaryBank.Accounts.Find(_ => (_.AccountID == to));
+            if (DebitedBank.BankName.Equals(BeneficiaryBank.BankName))
+            {
+                if (trasnferType.Equals("RTGS"))
+                    Charges = DebitedBank.RTGSOwnBank * amountToTransfer;
+                else
+                    Charges = DebitedBank.IMPSOwnBank * amountToTransfer;
+            }
+            else
+            {
+                if (trasnferType.Equals("RTGS"))
+                    Charges = DebitedBank.RTGSOtherBank * amountToTransfer;
+                else
+                    Charges = DebitedBank.IMPSOtherBank * amountToTransfer;
+            }
+            DebitedAccount.Funds -= (amountToTransfer + Charges);
             BeneficiaryAccount.Funds += amountToTransfer;
             string TransactionID = "TXN" + DateTime.Now.ToString();
             Holder.Transactions.Add(new Transaction(TransactionID, DateTime.Now, amountToTransfer, DebitedAccount.AccountID, to));

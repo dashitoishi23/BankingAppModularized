@@ -7,7 +7,7 @@ namespace BankingApplicationModularized.Services
 {
     public class ManagerServiceProvider
     {
-        Manager Manager;
+        Manager Manager = new Manager();
         
         public ManagerServiceProvider(Manager manager)
         {
@@ -21,7 +21,7 @@ namespace BankingApplicationModularized.Services
             this.Manager.Banks.Add(NewBank);
             return Manager;
         }
-        public void CreateAccount(string accountType, string name, string userID, string password, string bankName, string address, string contact) 
+        public Manager CreateAccount(string accountType, string name, string userID, string password, string bankName, string address, string contact) 
         {
             if (accountType.Equals("Account"))
             {
@@ -32,8 +32,10 @@ namespace BankingApplicationModularized.Services
                 string Address = address;
                 string Contact = contact;
                 var Bank = this.Manager.Banks.Find(_ => (_.BankName.Equals(BankName)));
+                this.Manager.Banks.Remove(Bank);
                 AccountHolder Holder = new AccountHolder(Bank.BankID, UserID, Password, Name, Address, Contact);
                 Bank.AccountHolders.Add(Holder);
+                this.Manager.Banks.Add(Bank);
             }
             else if (accountType.Equals("Staff"))
             {
@@ -54,9 +56,12 @@ namespace BankingApplicationModularized.Services
                 string Password = password;
                 string Contact = contact;
                 var Bank = this.Manager.Banks.Find(_ => (_.BankName.Equals(BankName)));
+                this.Manager.Banks.Remove(Bank);
                 BankStaff NewStaff = new BankStaff(EmployeeID, BankName, Bank.BankID, UserID, Password, Name, Address, Contact);
                 Bank.BankStaffs.Add(NewStaff);
+                this.Manager.Banks.Add(Bank);
             }
+            return this.Manager;
         }
     }
 }
