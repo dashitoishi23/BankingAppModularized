@@ -17,10 +17,10 @@ namespace BankingApplicationModularized.Models
 
         }
 
-        public Transaction(string TransactionID, DateTime transactionTime, double Amount, string From, string To)
+        public Transaction(double Amount, string From, string To)
         {
-            this.TransactionID = TransactionID;
-            this.TransactionDate = transactionTime;
+            this.TransactionID = "TXN" + DateTime.Now.ToString("MMddyyyy");
+            this.TransactionDate = DateTime.Now;
             this.Amount = Amount;
             this.From = From;
             this.To = To;

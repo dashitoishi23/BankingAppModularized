@@ -10,7 +10,7 @@ namespace BankingApplicationModularized.Models
         public int ExchangeRate { get; set; }
         public bool IsDefault { get; set; }
 
-        public Currency(string Name, int ExchangeRate, bool IsDefault)
+        public Currency(string name, int exchangeRate, bool isDefault = false)
         {
             this.Name = Name;
             this.ExchangeRate = ExchangeRate;

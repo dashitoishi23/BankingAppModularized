@@ -10,11 +10,11 @@ namespace BankingApplicationModularized.Models
         public string AccountID { get; set; }
         public double Funds { get; set; }
 
-        public Account(string UserID, string AccountID, double Funds)
+        public Account(string userID, string accountID, double funds)
         {
-            this.UserID = UserID;
-            this.AccountID = AccountID;
-            this.Funds = Funds;
+            this.UserID = userID;
+            this.AccountID = accountID;
+            this.Funds = funds;
         }
     }
 }

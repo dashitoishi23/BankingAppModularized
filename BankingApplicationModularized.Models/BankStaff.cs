@@ -20,13 +20,13 @@ namespace BankingApplicationModularized.Models
 
         }
 
-        public BankStaff(string EmployeeID, string BankName, string BankID, string UserID, string Password, string name, string address, string contact)
+        public BankStaff(string employeeID, string bankName, string bankID, string userID, string password, string name, string address, string contact)
         {
-            this.EmployeeID = EmployeeID;
-            this.BankName = BankName;
-            this.BankID = BankID;
-            this.UserID = UserID;
-            this.Password = Password;
+            this.EmployeeID = employeeID;
+            this.BankName = bankName;
+            this.BankID = bankID;
+            this.UserID = userID;
+            this.Password = password;
             this.Name = name;
             this.Address = address;
             this.Contact = contact;

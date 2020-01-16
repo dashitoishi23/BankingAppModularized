@@ -13,28 +13,23 @@ namespace BankingApplicationModularized.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
-        public List<Transaction> Transactions = new List<Transaction>();
+        public List<Transaction> transactions = new List<Transaction>();
 
 
-        public AccountHolder(string UserID, string Password)
+        public AccountHolder(string userID, string password)
         {
-            this.UserID = UserID;
-            this.Password = Password;
+            this.UserID = userID;
+            this.Password = password;
         }
 
-        public AccountHolder(string BankID, string UserID, string Password, string Name, string Address, string Contact)
+        public AccountHolder(string bankID, string userID, string password, string name, string address, string contact)
         {
-            this.BankID = BankID;
-            this.UserID = UserID;
-            this.Password = Password;
-            this.Name = Name;
-            this.Address = Address;
-            this.Contact = Contact;
-
-        }
-
-        public AccountHolder()
-        {
+            this.BankID = bankID;
+            this.UserID = userID;
+            this.Password = password;
+            this.Name = name;
+            this.Address = address;
+            this.Contact = contact;
 
         }
     }

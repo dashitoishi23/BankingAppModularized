@@ -27,12 +27,12 @@ namespace BankingAppModularized
                         {
                             case 1:
                                 LoginServiceProvider LoginHelper = new LoginServiceProvider();
-                                Console.WriteLine("Enter Bank");
+                                Console.WriteLine("Enter BankID");
                                 string BankName = Console.ReadLine();
-                                var Bank = managerControl.Banks.FirstOrDefault(_ => (_.BankName.Equals(BankName)));
+                                var Bank = managerControl.Banks.FirstOrDefault(_ => (_.bankID.Equals(BankName)));
                                 Console.WriteLine("Enter user ID");
                                 string UserID = Console.ReadLine();
-                                var AccountHolder = Bank.AccountHolders.FirstOrDefault(_ => (_.UserID.Equals(UserID)));
+                                var AccountHolder = Bank.accountHolders.FirstOrDefault(_ => (_.UserID.Equals(UserID)));
                                 Console.WriteLine("Enter Password");
                                 string Password = Console.ReadLine();
                                 try
@@ -44,7 +44,7 @@ namespace BankingAppModularized
                                         Console.WriteLine("3. Transfer Funds");
                                         Console.WriteLine("4. View Your Transactions");
                                         UserInput = Convert.ToInt32(Console.ReadLine());
-                                        AccountServiceProvider ServiceProvider = new AccountServiceProvider(AccountHolder, managerControl);
+                                        AccountServiceProvider ServiceProvider = new AccountServiceProvider(managerControl);
                                         switch (UserInput)
                                         {
                                             case 1:
@@ -56,9 +56,13 @@ namespace BankingAppModularized
                                             case 2:
                                                 Console.WriteLine("Enter amount you want to withdraw");
                                                 double amountToWithdraw = Convert.ToDouble(Console.ReadLine());
+                                                Console.WriteLine("Enter Bank ID");
+                                                string bankID = Console.ReadLine();
+                                                Console.WriteLine("Enter User ID");
+                                                string userID = Console.ReadLine();
                                                 try
                                                 {
-                                                    AccountHolder = ServiceProvider.WithdrawMoney(amountToWithdraw);
+                                                    AccountHolder = ServiceProvider.WithdrawMoney(amountToWithdraw, userID, bankID);
                                                 }
                                                 catch (Exception e)
                                                 {
@@ -71,7 +75,7 @@ namespace BankingAppModularized
                                                 Console.WriteLine("Whom to send money (Account ID)");
                                                 string beneficiaryAccount = Console.ReadLine();
                                                 Console.WriteLine("Enter Bank ID to transfer to");
-                                                string bankID = Console.ReadLine();
+                                                bankID = Console.ReadLine();
                                                 Console.WriteLine("Give the type of transfer");
                                                 string transferType = Console.ReadLine().ToUpper();
                                                 try
@@ -130,14 +134,12 @@ namespace BankingAppModularized
         public static void ContinueAsBankStaff(Manager managerControl)
         {
             LoginServiceProvider LoginHelper = new LoginServiceProvider();
-            Console.WriteLine("Enter Bank");
+            Console.WriteLine("Enter BankID");
             string BankName = Console.ReadLine();
-            var Bank = managerControl.Banks.FirstOrDefault(_ => (_.BankName.Equals(BankName)));
-            Console.WriteLine(Bank.BankName);
+            var Bank = managerControl.Banks.FirstOrDefault(_ => (_.bankID.Equals(BankName)));
             Console.WriteLine("Enter user ID");
             string UserID = Console.ReadLine();
-            var BankStaff = Bank.BankStaffs.FirstOrDefault(_ => (_.UserID.Equals(UserID)));
-            Console.WriteLine(BankStaff.BankName);
+            var BankStaff = Bank.bankStaffs.FirstOrDefault(_ => (_.UserID.Equals(UserID)));
             Console.WriteLine("Enter Password");
             string Password = Console.ReadLine();
             try
@@ -150,31 +152,32 @@ namespace BankingAppModularized
                     Console.WriteLine("4. Edit Charges");
                     Console.WriteLine("5. View Transactions");
                     int UserInput = Convert.ToInt32(Console.ReadLine());
-                    BankServiceProvider ServiceProvider = new BankServiceProvider(managerControl);
+                    AccountServiceProvider ServiceProvider = new AccountServiceProvider(managerControl);
+                    BankServiceProvider bankServiceProvider = new BankServiceProvider(managerControl);
                     switch (UserInput)
                     {
                         case 1:
                             Console.WriteLine("Enter User ID");
                             UserID = Console.ReadLine();
-                            Console.WriteLine("Name of bank");
-                            BankName = Console.ReadLine();
-                            managerControl = ServiceProvider.CreateAccount(UserID, BankName);
+                            Console.WriteLine("Name of bank ID");
+                            string bankID = Console.ReadLine();
+                            managerControl = ServiceProvider.CreateAccount(UserID, bankID);
                             break;
                         case 2:
-                            Console.WriteLine("Enter Bank Name");
-                            BankName = Console.ReadLine();
+                            Console.WriteLine("Enter Bank ID");
+                            bankID = Console.ReadLine();
                             Console.WriteLine("Enter Account ID");
                             string AccountID = Console.ReadLine();
-                            managerControl = ServiceProvider.DeleteAccount(BankName, AccountID);
+                            managerControl = ServiceProvider.DeleteAccount(bankID, AccountID);
                             break;
                         case 3:
-                            Console.WriteLine("Enter Bank Name");
-                            BankName = Console.ReadLine();
+                            Console.WriteLine("Enter Bank ID");
+                            bankID = Console.ReadLine();
                             Console.WriteLine("Enter Currency Name");
                             string CurrencyName = Console.ReadLine();
                             Console.WriteLine("Enter Exchange Rate");
                             int ExchangeRate = Convert.ToInt32(Console.ReadLine());
-                            managerControl = ServiceProvider.AddCurrency(BankName, CurrencyName, ExchangeRate);
+                            managerControl = bankServiceProvider.AddCurrency(bankID, CurrencyName, ExchangeRate);
                             break;
                         case 4:
                             Console.WriteLine("Enter Bank Name");
@@ -187,12 +190,12 @@ namespace BankingAppModularized
                             double IMPSOwn = Convert.ToDouble(Console.ReadLine());
                             Console.WriteLine("Enter IMPS charges for other bank");
                             double IMPSOther = Convert.ToDouble(Console.ReadLine());
-                            managerControl = ServiceProvider.EditCharges(BankName, RTGSOwn, RTGSOther, IMPSOwn, IMPSOther);
+                            managerControl = bankServiceProvider.EditCharges(BankName, RTGSOwn, RTGSOther, IMPSOwn, IMPSOther);
                             break;
                         case 5:
                             Console.WriteLine("Enter Bank Name");
                             BankName = Console.ReadLine();
-                            ServiceProvider.ViewAllTransactions(BankName);
+                            bankServiceProvider.ViewAllTransactions(BankName);
                             break;
                     }
                 }
@@ -219,13 +222,15 @@ namespace BankingAppModularized
             double IMPSOwn = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Give charges for IMPS otehr bank");
             double IMPSOther = Convert.ToDouble(Console.ReadLine());
-            managerControl = managerServices.CreateBank(BankName, IMPSOwn, IMPSOther, RTGSOwn, RTGSOther);
+            BankServiceProvider service = new BankServiceProvider(managerControl);
+            managerControl = service.CreateBank(BankName, IMPSOwn, IMPSOther, RTGSOwn, RTGSOther);
         }
         public static void CreateAccount(ManagerServiceProvider managerServices, Manager managerControl)
         {
             Console.WriteLine("1. Create an AccountHolder user");
             Console.WriteLine("2. Create a Bank Staff");
             int UserInput = Convert.ToInt32(Console.ReadLine());
+            BankServiceProvider bankServices = new BankServiceProvider(managerControl);
             switch (UserInput)
             {
                 case 1:
@@ -241,7 +246,7 @@ namespace BankingAppModularized
                     string Address = Console.ReadLine();
                     Console.WriteLine("Contact");
                     string Contact = Console.ReadLine();
-                    managerControl = managerServices.CreateAccount(AccountType.Account.ToString(), BankName, UserID, Password, BankName, Address, Contact);
+                    managerControl = bankServices.CreateUser(AccountType.Account, BankName, UserID, Password, BankName, Address, Contact);
                     break;
                 case 2:
                     Console.WriteLine("Enter your name");
@@ -256,7 +261,7 @@ namespace BankingAppModularized
                     Address = Console.ReadLine();
                     Console.WriteLine("Contact");
                     Contact = Console.ReadLine();
-                    managerControl = managerServices.CreateAccount(AccountType.Staff.ToString(), BankName, UserID, Password, BankName, Address, Contact);
+                    managerControl = bankServices.CreateUser(AccountType.Staff, BankName, UserID, Password, BankName, Address, Contact);
                     break;
             }
         }

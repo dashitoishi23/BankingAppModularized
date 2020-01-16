@@ -6,32 +6,27 @@ namespace BankingApplicationModularized.Models
 {
     public class Bank
     {
-        public double IMPSOwnBank;
-        public double RTGSOwnBank;
-        public double IMPSOtherBank;
-        public double RTGSOtherBank;
-        public string BankID;
-        public string BankName;
-        public List<AccountHolder> AccountHolders = new List<AccountHolder>();
-        public List<Currency> Currencies = new List<Currency>();
-        public List<BankStaff> BankStaffs = new List<BankStaff>();
-        public List<Transaction> Transactions = new List<Transaction>();
-        public List<Account> Accounts = new List<Account>();
+        public double impsOwnBank;
+        public double rtgsOwnBank;
+        public double impsOtherBank;
+        public double rtgsOtherBank;
+        public string bankID;
+        public string bankName;
+        public List<AccountHolder> accountHolders = new List<AccountHolder>();
+        public List<Currency> currencies = new List<Currency>();
+        public List<BankStaff> bankStaffs = new List<BankStaff>();
+        public List<Transaction> transactions = new List<Transaction>();
+        public List<Account> accounts = new List<Account>();
 
-        public Bank()
+        public Bank(double impsOwnBank, double rtgsOwnBank, double impsOtherBank, double rtgsOtherBank, string bankName, Currency currency)
         {
-            this.BankID = $"{BankName.Substring(0, 3)}{DateTime.Now.ToString()}";
-
-        }
-        public Bank(double IMPSOwnBank, double RTGSOwnBank, double IMPSOtherBank, double RTGSOtherBank, string BankName, Currency currency)
-        {
-            this.IMPSOwnBank = IMPSOwnBank;
-            this.RTGSOwnBank = RTGSOwnBank;
-            this.IMPSOtherBank = IMPSOtherBank;
-            this.RTGSOtherBank = RTGSOtherBank;
-            this.BankName = BankName;
-            this.BankID = $"{BankName.Substring(0, 3)}{DateTime.Now.ToString()}";
-            this.Currencies.Add(currency);
+            this.impsOwnBank = impsOwnBank;
+            this.rtgsOwnBank = rtgsOwnBank;
+            this.impsOtherBank = impsOtherBank;
+            this.rtgsOtherBank = rtgsOtherBank;
+            this.bankName = bankName;
+            this.bankID = $"{bankName.Substring(0, 3)}{DateTime.Now.ToString()}";
+            this.currencies.Add(currency);
             Console.WriteLine("Bank has been created!!!");
 
 

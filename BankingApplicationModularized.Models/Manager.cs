@@ -5,8 +5,8 @@ namespace BankingApplicationModularized.Models
 {
     public class Manager
     {
-        public string userID { get; set; }
-        public string password { get; set; }
+        public string UserID { get; set; }
+        public string Password { get; set; }
         public List<Bank> Banks = new List<Bank>();
     }
 }
