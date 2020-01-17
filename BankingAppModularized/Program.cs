@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 using BankingApplicationModularized.Models;
 using BankingApplicationModularized.Services;
 namespace BankingAppModularized
@@ -8,10 +9,23 @@ namespace BankingAppModularized
     {
         static void Main(string[] args)
         {
-            Manager managerControl = new Manager();
+            Manager managerControl = null;
             while (true)
             {
                 Console.WriteLine("Welcome to this banking app");
+                try
+                {
+                    string JSON = System.IO.File.ReadAllText("C:/Users/Hitoishi.d/Desktop/Data.json");
+                    managerControl = Newtonsoft.Json.JsonConvert.DeserializeObject<Manager>(JSON);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("No data!");
+                }
+                if(managerControl == null)
+                {
+                    managerControl = new Manager();
+                }
                 Console.WriteLine("1. Continue as an existing bank ");
                 Console.WriteLine("2. Continue as a manager");
                 Console.WriteLine("3. Exit");
@@ -99,7 +113,7 @@ namespace BankingAppModularized
                                         Console.WriteLine("Wrong username or password");
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
 
                                     Console.WriteLine("Invalid Credentials");
@@ -126,6 +140,8 @@ namespace BankingAppModularized
                         }
                         break;
                     case 3:
+                        string JSON = Newtonsoft.Json.JsonConvert.SerializeObject(managerControl);
+                        System.IO.File.WriteAllText("C:/Users/Hitoishi.d/Desktop/Data.json", JSON);
                         System.Environment.Exit(0);
                         break;
                 }
@@ -204,7 +220,7 @@ namespace BankingAppModularized
                     Console.WriteLine("Wrong username or password");
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 Console.WriteLine("Invalid");
             }
@@ -246,7 +262,7 @@ namespace BankingAppModularized
                     string Address = Console.ReadLine();
                     Console.WriteLine("Contact");
                     string Contact = Console.ReadLine();
-                    managerControl = bankServices.CreateUser(AccountType.Account, BankName, UserID, Password, BankName, Address, Contact);
+                    managerControl = bankServices.CreateUser(managerControl, AccountType.Account, BankName, UserID, Password, BankName, Address, Contact);
                     break;
                 case 2:
                     Console.WriteLine("Enter your name");
@@ -261,7 +277,7 @@ namespace BankingAppModularized
                     Address = Console.ReadLine();
                     Console.WriteLine("Contact");
                     Contact = Console.ReadLine();
-                    managerControl = bankServices.CreateUser(AccountType.Staff, BankName, UserID, Password, BankName, Address, Contact);
+                    managerControl = bankServices.CreateUser(managerControl, AccountType.Staff, BankName, UserID, Password, BankName, Address, Contact);
                     break;
             }
         }

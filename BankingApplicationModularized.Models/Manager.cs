@@ -9,4 +9,5 @@ namespace BankingApplicationModularized.Models
         public string Password { get; set; }
         public List<Bank> Banks = new List<Bank>();
     }
+
 }

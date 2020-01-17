@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace BankingApplicationModularized.Models
 {
@@ -15,6 +16,7 @@ namespace BankingApplicationModularized.Models
             this.UserID = userID;
             this.AccountID = accountID;
             this.Funds = funds;
+
         }
     }
 }

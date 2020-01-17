@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BankingApplicationModularized.Models\BankingApplicationModularized.Models.csproj" />
     <ProjectReference Include="..\BankingApplicationModularized.Services\BankingApplicationModularized.Services.csproj" />
   </ItemGroup>

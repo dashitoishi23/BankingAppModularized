@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using BankingApplicationModularized.Models;
 using System.Linq;
 
@@ -57,7 +58,7 @@ namespace BankingApplicationModularized.Services
                 Console.WriteLine("To" + transaction.To);
             }
         }
-        public Manager CreateUser(AccountType accountType, string name, string userID, string password, string bankID, string address, string contact)
+        public void CreateUser(Manager manager, AccountType accountType, string name, string userID, string password, string bankID, string address, string contact)
         {
             if (accountType.Equals("Account"))
             {
@@ -67,6 +68,7 @@ namespace BankingApplicationModularized.Services
                 AccountHolder Holder = new AccountHolder(Bank.bankID, userID, password, name, address, contact);
                 Bank.accountHolders.Add(Holder);
                 this.Manager.Banks.Add(Bank);
+                manager.Banks.Add(Bank);
             }
             else if (accountType.Equals("Staff"))
             {
@@ -85,8 +87,8 @@ namespace BankingApplicationModularized.Services
                 BankStaff NewStaff = new BankStaff(EmployeeID, Bank.bankName, Bank.bankID, userID, password, name, address, contact);
                 Bank.bankStaffs.Add(NewStaff);
                 this.Manager.Banks.Add(Bank);
+                manager.Banks.Add(Bank);
             }
-            return this.Manager;
         }
     }
 }

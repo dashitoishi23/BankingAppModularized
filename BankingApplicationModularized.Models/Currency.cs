@@ -12,9 +12,9 @@ namespace BankingApplicationModularized.Models
 
         public Currency(string name, int exchangeRate, bool isDefault = false)
         {
-            this.Name = Name;
-            this.ExchangeRate = ExchangeRate;
-            this.IsDefault = IsDefault;
+            this.Name = name;
+            this.ExchangeRate = exchangeRate;
+            this.IsDefault = isDefault;
         }
     }
 }
